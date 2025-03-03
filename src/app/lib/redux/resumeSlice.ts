@@ -8,6 +8,7 @@ import type {
   ResumeProject,
   ResumeSkills,
   ResumeWorkExperience,
+  ResumeCustom,
 } from "lib/redux/types";
 import type { ShowForm } from "lib/redux/settingsSlice";
 
@@ -51,6 +52,7 @@ export const initialSkills: ResumeSkills = {
 };
 
 export const initialCustom = {
+  title: "Custom Section",
   descriptions: [],
 };
 
@@ -60,19 +62,19 @@ export const initialResumeState: Resume = {
   educations: [initialEducation],
   projects: [initialProject],
   skills: initialSkills,
-  custom: initialCustom,
+  customs: [initialCustom],
 };
 
 // Keep the field & value type in sync with CreateHandleChangeArgsWithDescriptions (components\ResumeForm\types.ts)
 export type CreateChangeActionWithDescriptions<T> = {
   idx: number;
 } & (
-  | {
+    | {
       field: Exclude<keyof T, "descriptions">;
       value: string;
     }
-  | { field: "descriptions"; value: string[] }
-);
+    | { field: "descriptions"; value: string[] }
+  );
 
 export const resumeSlice = createSlice({
   name: "resume",
@@ -116,11 +118,11 @@ export const resumeSlice = createSlice({
       action: PayloadAction<
         | { field: "descriptions"; value: string[] }
         | {
-            field: "featuredSkills";
-            idx: number;
-            skill: string;
-            rating: number;
-          }
+          field: "featuredSkills";
+          idx: number;
+          skill: string;
+          rating: number;
+        }
       >
     ) => {
       const { field } = action.payload;
@@ -134,12 +136,13 @@ export const resumeSlice = createSlice({
         featuredSkill.rating = rating;
       }
     },
-    changeCustom: (
+    changeCustoms: (
       draft,
-      action: PayloadAction<{ field: "descriptions"; value: string[] }>
+      action: PayloadAction<CreateChangeActionWithDescriptions<ResumeCustom>>
     ) => {
-      const { value } = action.payload;
-      draft.custom.descriptions = value;
+      const { idx, field, value } = action.payload;
+      const custom = draft.customs[idx];
+      custom[field] = value as any;
     },
     addSectionInForm: (draft, action: PayloadAction<{ form: ShowForm }>) => {
       const { form } = action.payload;
@@ -156,6 +159,10 @@ export const resumeSlice = createSlice({
           draft.projects.push(structuredClone(initialProject));
           return draft;
         }
+        case "customs": {
+          draft.customs.push(structuredClone(initialCustom));
+          return draft;
+        }
       }
     },
     moveSectionInForm: (
@@ -167,7 +174,7 @@ export const resumeSlice = createSlice({
       }>
     ) => {
       const { form, idx, direction } = action.payload;
-      if (form !== "skills" && form !== "custom") {
+      if (form !== "skills") {
         if (
           (idx === 0 && direction === "up") ||
           (idx === draft[form].length - 1 && direction === "down")
@@ -190,12 +197,28 @@ export const resumeSlice = createSlice({
       action: PayloadAction<{ form: ShowForm; idx: number }>
     ) => {
       const { form, idx } = action.payload;
-      if (form !== "skills" && form !== "custom") {
+      if (form !== "skills") {
         draft[form].splice(idx, 1);
       }
     },
     setResume: (draft, action: PayloadAction<Resume>) => {
-      return action.payload;
+      // Handle migration from 'custom' to 'customs' if needed
+      const payload = action.payload;
+
+      // If we received old format data with 'custom' property
+      if ('custom' in payload && !('customs' in payload)) {
+        // @ts-ignore - Custom type handling for migration
+        const oldCustom = payload.custom;
+        // @ts-ignore - Create the new customs array
+        payload.customs = [{
+          title: "Custom Section",
+          descriptions: oldCustom.descriptions || []
+        }];
+        // @ts-ignore - Remove old property
+        delete payload.custom;
+      }
+
+      return payload;
     },
   },
 });
@@ -206,7 +229,7 @@ export const {
   changeEducations,
   changeProjects,
   changeSkills,
-  changeCustom,
+  changeCustoms,
   addSectionInForm,
   moveSectionInForm,
   deleteSectionInFormByIdx,
@@ -220,6 +243,6 @@ export const selectWorkExperiences = (state: RootState) =>
 export const selectEducations = (state: RootState) => state.resume.educations;
 export const selectProjects = (state: RootState) => state.resume.projects;
 export const selectSkills = (state: RootState) => state.resume.skills;
-export const selectCustom = (state: RootState) => state.resume.custom;
+export const selectCustoms = (state: RootState) => state.resume.customs;
 
 export default resumeSlice.reducer;

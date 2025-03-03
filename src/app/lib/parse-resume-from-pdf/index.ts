@@ -21,5 +21,13 @@ export const parseResumeFromPdf = async (fileUrl: string) => {
   // Step 4. Extract resume from sections
   const resume = extractResumeFromSections(sections);
 
+  // Ensure customs array is properly initialized
+  if (!resume.customs) {
+    resume.customs = [{
+      title: "Custom Section",
+      descriptions: []
+    }];
+  }
+
   return resume;
 };

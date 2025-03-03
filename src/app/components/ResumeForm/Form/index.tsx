@@ -51,7 +51,7 @@ const FORM_TO_ICON: { [section in ShowForm]: typeof BuildingOfficeIcon } = {
   educations: AcademicCapIcon,
   projects: LightBulbIcon,
   skills: WrenchIcon,
-  custom: WrenchIcon,
+  customs: WrenchIcon,
 };
 
 export const Form = ({
@@ -85,9 +85,8 @@ export const Form = ({
 
   return (
     <BaseForm
-      className={`transition-opacity duration-200 ${
-        showForm ? "pb-6" : "pb-2 opacity-60"
-      }`}
+      className={`transition-opacity duration-200 ${showForm ? "pb-6" : "pb-2 opacity-60"
+        }`}
     >
       <div className="flex items-center justify-between gap-4">
         <div className="flex grow items-center gap-2">
@@ -167,9 +166,8 @@ export const FormSection = ({
         {children}
         <div className={`absolute right-0 top-0 flex gap-0.5 `}>
           <div
-            className={`transition-all duration-300 ${
-              showMoveUp ? "" : "invisible opacity-0"
-            } ${showMoveDown ? "" : "-mr-6"}`}
+            className={`transition-all duration-300 ${showMoveUp ? "" : "invisible opacity-0"
+              } ${showMoveDown ? "" : "-mr-6"}`}
           >
             <MoveIconButton
               type="up"
@@ -178,9 +176,8 @@ export const FormSection = ({
             />
           </div>
           <div
-            className={`transition-all duration-300 ${
-              showMoveDown ? "" : "invisible opacity-0"
-            }`}
+            className={`transition-all duration-300 ${showMoveDown ? "" : "invisible opacity-0"
+              }`}
           >
             <MoveIconButton
               type="down"
@@ -189,9 +186,8 @@ export const FormSection = ({
             />
           </div>
           <div
-            className={`transition-all duration-300 ${
-              showDelete ? "" : "invisible opacity-0"
-            }`}
+            className={`transition-all duration-300 ${showDelete ? "" : "invisible opacity-0"
+              }`}
           >
             <DeleteIconButton
               onClick={handleDeleteClick}

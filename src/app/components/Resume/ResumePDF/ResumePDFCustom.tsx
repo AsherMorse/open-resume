@@ -2,31 +2,32 @@ import { View } from "@react-pdf/renderer";
 import {
   ResumePDFSection,
   ResumePDFBulletList,
+  ResumePDFText,
 } from "components/Resume/ResumePDF/common";
-import { styles } from "components/Resume/ResumePDF/styles";
+import { styles, spacing } from "components/Resume/ResumePDF/styles";
 import type { ResumeCustom } from "lib/redux/types";
 
 export const ResumePDFCustom = ({
-  heading,
-  custom,
+  customs,
   themeColor,
   showBulletPoints,
 }: {
-  heading: string;
-  custom: ResumeCustom;
+  customs: ResumeCustom[];
   themeColor: string;
   showBulletPoints: boolean;
 }) => {
-  const { descriptions } = custom;
-
   return (
-    <ResumePDFSection themeColor={themeColor} heading={heading}>
-      <View style={{ ...styles.flexCol }}>
-        <ResumePDFBulletList
-          items={descriptions}
-          showBulletPoints={showBulletPoints}
-        />
-      </View>
-    </ResumePDFSection>
+    <>
+      {customs.map(({ title, descriptions }, idx) => (
+        <ResumePDFSection key={idx} themeColor={themeColor} heading={title}>
+          <View style={{ ...styles.flexCol }}>
+            <ResumePDFBulletList
+              items={descriptions}
+              showBulletPoints={showBulletPoints}
+            />
+          </View>
+        </ResumePDFSection>
+      ))}
+    </>
   );
 };

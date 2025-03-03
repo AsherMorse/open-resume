@@ -35,8 +35,9 @@ export const extractResumeFromSections = (
     workExperiences,
     projects,
     skills,
-    custom: {
+    customs: [{
+      title: "Custom Section",
       descriptions: [],
-    },
+    }],
   };
 };

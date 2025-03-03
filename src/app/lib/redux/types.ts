@@ -39,6 +39,7 @@ export interface ResumeSkills {
 }
 
 export interface ResumeCustom {
+  title: string;
   descriptions: string[];
 }
 
@@ -48,7 +49,7 @@ export interface Resume {
   educations: ResumeEducation[];
   projects: ResumeProject[];
   skills: ResumeSkills;
-  custom: ResumeCustom;
+  customs: ResumeCustom[];
 }
 
 export type ResumeKey = keyof Resume;

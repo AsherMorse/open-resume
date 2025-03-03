@@ -35,7 +35,7 @@ export const ResumePDF = ({
   settings: Settings;
   isPDF?: boolean;
 }) => {
-  const { profile, workExperiences, educations, projects, skills, custom } =
+  const { profile, workExperiences, educations, projects, skills, customs } =
     resume;
   const { name } = profile;
   const {
@@ -82,12 +82,11 @@ export const ResumePDF = ({
         showBulletPoints={showBulletPoints["skills"]}
       />
     ),
-    custom: () => (
+    customs: () => (
       <ResumePDFCustom
-        heading={formToHeading["custom"]}
-        custom={custom}
+        customs={customs}
         themeColor={themeColor}
-        showBulletPoints={showBulletPoints["custom"]}
+        showBulletPoints={showBulletPoints["customs"]}
       />
     ),
   };

@@ -16,12 +16,13 @@ import { CustomForm } from "components/ResumeForm/CustomForm";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import { cx } from "lib/cx";
 
-const formTypeToComponent: { [type in ShowForm]: () => JSX.Element } = {
+const formTypeToComponent: { [type in ShowForm | 'custom']: () => JSX.Element } = {
   workExperiences: WorkExperiencesForm,
   educations: EducationsForm,
   projects: ProjectsForm,
   skills: SkillsForm,
-  custom: CustomForm,
+  customs: CustomForm,
+  custom: CustomForm
 };
 
 export const ResumeForm = () => {

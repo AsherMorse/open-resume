@@ -3,6 +3,7 @@ import {
   initialProfile,
   initialProject,
   initialWorkExperience,
+  initialCustom,
 } from "lib/redux/resumeSlice";
 import type { Resume } from "lib/redux/types";
 import { deepClone } from "lib/deep-clone";
@@ -84,9 +85,10 @@ export const END_HOME_RESUME: Resume = {
       "Soft: Teamwork, Creative Problem Solving, Communication, Learning Mindset, Agile",
     ],
   },
-  custom: {
+  customs: [{
+    title: "Custom Section",
     descriptions: [],
-  },
+  }],
 };
 
 export const START_HOME_RESUME: Resume = {
@@ -103,7 +105,5 @@ export const START_HOME_RESUME: Resume = {
     })),
     descriptions: [],
   },
-  custom: {
-    descriptions: [],
-  },
+  customs: [deepClone(initialCustom)],
 };
