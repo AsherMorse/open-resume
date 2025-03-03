@@ -170,7 +170,7 @@ export const extractProfile = (sections: ResumeSectionToLines) => {
       email,
       phone,
       location,
-      url,
+      urls: url ? [{ name: "Website", url }] : [],
       // Dedicated section takes higher precedence over profile summary
       summary: summarySection || objectiveSection || summary,
     },

@@ -20,8 +20,8 @@ export const ResumePDFProfile = ({
   themeColor: string;
   isPDF: boolean;
 }) => {
-  const { name, email, phone, url, summary, location } = profile;
-  const iconProps = { email, phone, location, url };
+  const { name, email, phone, urls, summary, location } = profile;
+  const iconProps = { email, phone, location };
 
   return (
     <ResumePDFSection style={{ marginTop: spacing["4"] }}>
@@ -40,19 +40,13 @@ export const ResumePDFProfile = ({
           marginTop: spacing["0.5"],
         }}
       >
+        {/* Handle basic contact info */}
         {Object.entries(iconProps).map(([key, value]) => {
           if (!value) return null;
 
           let iconType = key as IconType;
-          if (key === "url") {
-            if (value.includes("github")) {
-              iconType = "url_github";
-            } else if (value.includes("linkedin")) {
-              iconType = "url_linkedin";
-            }
-          }
+          const shouldUseLinkWrapper = ["email", "phone"].includes(key);
 
-          const shouldUseLinkWrapper = ["email", "url", "phone"].includes(key);
           const Wrapper = ({ children }: { children: React.ReactNode }) => {
             if (!shouldUseLinkWrapper) return <>{children}</>;
 
@@ -91,6 +85,38 @@ export const ResumePDFProfile = ({
               <Wrapper>
                 <ResumePDFText>{value}</ResumePDFText>
               </Wrapper>
+            </View>
+          );
+        })}
+
+        {/* Handle URLs */}
+        {urls && urls.map((urlItem, index) => {
+          if (!urlItem.url) return null;
+
+          let iconType: IconType = "url";
+          if (urlItem.url.includes("github")) {
+            iconType = "url_github";
+          } else if (urlItem.url.includes("linkedin")) {
+            iconType = "url_linkedin";
+          }
+
+          const src = urlItem.url.startsWith("http")
+            ? urlItem.url
+            : `https://${urlItem.url}`;
+
+          return (
+            <View
+              key={`url-${index}`}
+              style={{
+                ...styles.flexRow,
+                alignItems: "center",
+                gap: spacing["1"],
+              }}
+            >
+              <ResumePDFIcon type={iconType} isPDF={isPDF} />
+              <ResumePDFLink src={src} isPDF={isPDF}>
+                <ResumePDFText>{urlItem.name || urlItem.url}</ResumePDFText>
+              </ResumePDFLink>
             </View>
           );
         })}

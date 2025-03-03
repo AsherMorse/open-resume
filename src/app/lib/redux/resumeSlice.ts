@@ -18,7 +18,7 @@ export const initialProfile: ResumeProfile = {
   email: "",
   phone: "",
   location: "",
-  url: "",
+  urls: [],
 };
 
 export const initialWorkExperience: ResumeWorkExperience = {
@@ -82,10 +82,13 @@ export const resumeSlice = createSlice({
   reducers: {
     changeProfile: (
       draft,
-      action: PayloadAction<{ field: keyof ResumeProfile; value: string }>
+      action: PayloadAction<{
+        field: keyof ResumeProfile;
+        value: string | { name: string, url: string }[]
+      }>
     ) => {
       const { field, value } = action.payload;
-      draft.profile[field] = value;
+      (draft.profile[field] as any) = value;
     },
     changeWorkExperiences: (
       draft,

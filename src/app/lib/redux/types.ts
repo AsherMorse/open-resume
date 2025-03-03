@@ -2,7 +2,7 @@ export interface ResumeProfile {
   name: string;
   email: string;
   phone: string;
-  url: string;
+  urls: { name: string, url: string }[];
   summary: string;
   location: string;
 }
