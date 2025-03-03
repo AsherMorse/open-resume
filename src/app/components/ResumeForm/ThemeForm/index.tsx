@@ -62,6 +62,25 @@ export const ThemeForm = () => {
               </div>
             ))}
           </div>
+
+          <div className="mt-4 flex items-center gap-2">
+            <label className="flex items-center gap-2 text-base font-medium text-gray-700">
+              <span>Color Picker</span>
+              <div
+                className="inline-flex items-center border border-gray-300 rounded-md p-1 hover:border-gray-400 cursor-pointer relative"
+                style={{ backgroundColor: themeColor }}
+              >
+                <input
+                  type="color"
+                  value={themeColor}
+                  onChange={(e) => handleSettingsChange("themeColor", e.target.value)}
+                  className="w-8 h-8 cursor-pointer border-none opacity-0 m-0 p-0 absolute inset-0"
+                  aria-label="Select color"
+                />
+                <div className="w-8 h-8 pointer-events-none" />
+              </div>
+            </label>
+          </div>
         </div>
         <div>
           <InputGroupWrapper label="Font Family" />
